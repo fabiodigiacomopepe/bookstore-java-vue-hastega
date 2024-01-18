@@ -7,7 +7,12 @@ const router = createRouter({
             path: '/',
             name: 'home',
             component: () => import('./pages/AppLogin.vue')
-        }
+        },
+        {
+            path: '/books/user/:id',
+            name: 'book-list',
+            component: () => import('./pages/AppBook.vue')
+        },
     ]
 });
 
