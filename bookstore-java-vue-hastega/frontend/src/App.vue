@@ -26,7 +26,7 @@ export default {
             store.arrayUsers = res.data;
             setTimeout(() => {
               store.loading = false;
-              console.log(store.arrayUsers);
+              // console.log(store.arrayUsers);
             }, 500);
           })
         .catch(err => {

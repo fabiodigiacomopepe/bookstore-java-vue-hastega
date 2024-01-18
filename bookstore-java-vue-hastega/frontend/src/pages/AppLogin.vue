@@ -1,39 +1,35 @@
 <script>
 import { store } from './../store.js';
-import axios from 'axios'
 
 export default {
   name: "AppLogin",
   data() {
     return {
       store,
-      selectedUserId: null
+      selectedUserId: 0
     }
   },
   methods: {
-    sendUserId() {
-      console.log(this.selectedUserId);
-      if (this.selectedUserId != null) {
 
-      }
-    },
   }
 }
 </script>
 
 <template>
   <div class="container_login d-flex justify-content-center align-items-center">
-    <div class="sub_container d-flex justify-content-center text-center" style="height: 80vh;">
+    <div class="sub_container d-flex justify-content-center text-center" style="height: 90vh;">
       <div>
         <h1>Benvenuto</h1>
         <h3>Seleziona l'account con cui desideri accedere:</h3>
         <select name="user" id="user" v-model="selectedUserId">
-          <option value=""></option>
+          <option value="0"></option>
           <option v-for="(user, index) in store.arrayUsers" :key="index" :value="user.id">
             {{ user.firstName }} {{ user.lastName }}
           </option>
         </select>
-        <button type="button" class="btn btn-primary button_login" @click="sendUserId()">ACCEDI</button>
+        <router-link :to="{ name: 'book-list', params: { id: selectedUserId } }">
+          <button type="button" class="btn btn-primary button_login" :disabled="this.selectedUserId == 0">ACCEDI</button>
+        </router-link>
       </div>
     </div>
   </div>
@@ -66,7 +62,7 @@ export default {
   }
 
   .button_login {
-    margin-top: 90px;
+    margin-top: 140px;
     width: 200px;
     padding: 20px;
     font-size: 1.2rem;
