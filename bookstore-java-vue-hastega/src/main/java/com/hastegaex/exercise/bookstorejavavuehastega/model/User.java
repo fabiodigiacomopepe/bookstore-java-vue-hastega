@@ -1,4 +1,4 @@
-package com.hastegaex.test.bookstorejavavuehastega.model;
+package com.hastegaex.exercise.bookstorejavavuehastega.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
