@@ -1,12 +1,14 @@
 <script>
 import { store } from './store.js'
 import axios from 'axios'
-import AppHelloWorld from './components/AppHelloWorld.vue'
+import AppLoader from './components/AppLoader.vue'
+import AppLogin from './pages/AppLogin.vue'
 
 
 export default {
   components: {
-    AppHelloWorld,
+    AppLoader,
+    AppLogin,
   },
   data() {
     return {
@@ -14,16 +16,37 @@ export default {
     }
   },
   methods: {
+    getUsersList() {
+      let userListUrl = store.pathApiUsers;
 
+      axios
+        .get(userListUrl)
+        .then(
+          res => {
+            store.arrayUsers = res.data;
+            setTimeout(() => {
+              store.loading = false;
+              console.log(store.arrayUsers);
+            }, 500);
+          })
+        .catch(err => {
+          console.log(err);
+        })
+    },
   },
   created() {
-
+    this.getUsersList();
   }
 }
 </script>
 
 <template>
-  <AppHelloWorld />
+  <div class="container_fluid">
+    <AppLoader v-if="store.loading" />
+    <div v-else>
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
 <style lang="scss">
