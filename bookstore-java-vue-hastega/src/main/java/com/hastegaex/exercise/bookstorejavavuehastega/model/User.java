@@ -1,5 +1,6 @@
 package com.hastegaex.exercise.bookstorejavavuehastega.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -25,6 +26,7 @@ public class User {
 
     // Con fetch = FetchType.EAGER carico tutto
     @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Book> books;
 
     public Integer getId() {
