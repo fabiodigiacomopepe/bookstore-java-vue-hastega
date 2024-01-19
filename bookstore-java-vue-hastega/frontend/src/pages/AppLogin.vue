@@ -6,7 +6,6 @@ export default {
   data() {
     return {
       store,
-      selectedUserId: 0
     }
   },
   methods: {
@@ -21,14 +20,15 @@ export default {
       <div>
         <h1>Benvenuto</h1>
         <h3>Seleziona l'account con cui desideri accedere:</h3>
-        <select name="user" id="user" v-model="selectedUserId">
+        <select name="user" id="user" v-model="store.userIdLogin">
           <option value="0"></option>
           <option v-for="(user, index) in store.arrayUsers" :key="index" :value="user.id">
             {{ user.firstName }} {{ user.lastName }}
           </option>
         </select>
-        <router-link :to="{ name: 'book-list', params: { id: selectedUserId } }">
-          <button type="button" class="btn btn-primary button_login" :disabled="this.selectedUserId == 0">ACCEDI</button>
+        <router-link :to="{ name: 'book-list', params: { id: store.userIdLogin } }">
+          <button type="button" class="btn btn-primary button_login"
+            :disabled="this.store.userIdLogin == 0">ACCEDI</button>
         </router-link>
       </div>
     </div>
