@@ -67,6 +67,10 @@ export default {
                                     <i class="fa-solid fa-magnifying-glass btn btn-dark"
                                         style="position: relative; top: 5px; height: 30px; border-radius: 20px;"></i>
                                 </router-link>
+                                <router-link :to="{ name: 'book-edit', params: { id: book.id } }">
+                                    <i class="fa-solid fa-pen-to-square btn btn-dark"
+                                        style="position: relative; top: 5px; height: 30px; border-radius: 20px;"></i>
+                                </router-link>
                             </tr>
                         </tbody>
                     </table>
