@@ -3,6 +3,7 @@ package com.hastegaex.exercise.bookstorejavavuehastega.api;
 import com.hastegaex.exercise.bookstorejavavuehastega.model.Book;
 import com.hastegaex.exercise.bookstorejavavuehastega.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,13 @@ public class BookRestController {
     @GetMapping("/{id}/show")
     public Book show(@PathVariable Integer id) {
         // Ritorno libro
-        return bookService.getBookListById(id);
+        return bookService.getBookById(id);
+    }
+
+    // Rotta "/api/v1/books/id/edit" <---(id dinamico) (POST)
+    @PostMapping("/{id}/edit")
+    public ResponseEntity<String> editBook(@RequestBody Book formBook) {
+        Book savedBook = bookService.editBook(formBook);
+        return ResponseEntity.ok("Book saved.");
     }
 }
