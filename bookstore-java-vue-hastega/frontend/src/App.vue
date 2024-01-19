@@ -3,12 +3,17 @@ import { store } from './store.js'
 import axios from 'axios'
 import AppLoader from './components/AppLoader.vue'
 import AppLogin from './pages/AppLogin.vue'
+import AppBook from './pages/AppBook.vue'
+import AppBookDetail from './pages/AppBookDetail.vue'
+
 
 
 export default {
   components: {
     AppLoader,
     AppLogin,
+    AppBook,
+    AppBookDetail,
   },
   data() {
     return {
@@ -26,7 +31,6 @@ export default {
             store.arrayUsers = res.data;
             setTimeout(() => {
               store.loading = false;
-              // console.log(store.arrayUsers);
             }, 500);
           })
         .catch(err => {
