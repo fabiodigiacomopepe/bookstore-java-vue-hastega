@@ -14,12 +14,12 @@ const router = createRouter({
             component: () => import('./pages/AppBook.vue'),
         },
         {
-            path: '/books/:id',
+            path: '/books/:id/show',
             name: 'book-detail',
             component: () => import('./pages/AppBookDetail.vue'),
         },
         {
-            path: '/books/edit/:id',
+            path: '/books/:id/edit',
             name: 'book-edit',
             component: () => import('./pages/AppBookEdit.vue'),
         },
