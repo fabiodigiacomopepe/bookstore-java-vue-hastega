@@ -18,6 +18,11 @@ const router = createRouter({
             name: 'book-detail',
             component: () => import('./pages/AppBookDetail.vue'),
         },
+        {
+            path: '/books/edit/:id',
+            name: 'book-edit',
+            component: () => import('./pages/AppBookEdit.vue'),
+        },
     ]
 });
 
