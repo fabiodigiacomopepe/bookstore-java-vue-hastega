@@ -49,7 +49,7 @@ export default {
                     </div>
                     <div><span style="font-weight: bold;">ISBN-13:</span> {{ this.book.isbn }}</div>
                     <div><span style="font-weight: bold;">Creato:</span> {{ this.book.createdAt }}</div>
-                    <div v-if="this.book.deletedAt != ''"><span style="font-weight: bold;">Eliminato:</span> {{
+                    <div v-if="this.book.deletedAt != NULL"><span style="font-weight: bold;">Eliminato:</span> {{
                         this.book.deletedAt }}</div>
                     <div><span style="font-weight: bold;">Trama:</span> {{ this.book.plot }}</div>
                 </div>
