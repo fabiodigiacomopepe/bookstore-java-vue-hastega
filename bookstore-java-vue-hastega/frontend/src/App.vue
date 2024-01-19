@@ -5,8 +5,7 @@ import AppLoader from './components/AppLoader.vue'
 import AppLogin from './pages/AppLogin.vue'
 import AppBook from './pages/AppBook.vue'
 import AppBookDetail from './pages/AppBookDetail.vue'
-
-
+import AppBookEdit from './pages/AppBookEdit.vue'
 
 export default {
   components: {
@@ -14,6 +13,7 @@ export default {
     AppLogin,
     AppBook,
     AppBookDetail,
+    AppBookEdit,
   },
   data() {
     return {
