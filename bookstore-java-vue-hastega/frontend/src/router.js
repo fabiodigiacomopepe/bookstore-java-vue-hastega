@@ -6,12 +6,17 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: () => import('./pages/AppLogin.vue')
+            component: () => import('./pages/AppLogin.vue'),
         },
         {
             path: '/books/user/:id',
             name: 'book-list',
-            component: () => import('./pages/AppBook.vue')
+            component: () => import('./pages/AppBook.vue'),
+        },
+        {
+            path: '/books/:id',
+            name: 'book-detail',
+            component: () => import('./pages/AppBookDetail.vue'),
         },
     ]
 });
