@@ -99,7 +99,7 @@ export default {
     }
 
     h1 {
-        margin: 2rem 0 1rem 0;
+        margin: 2rem 0 2rem 0;
     }
 
     h3 {
