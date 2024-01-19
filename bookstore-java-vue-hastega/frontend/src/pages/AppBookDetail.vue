@@ -16,7 +16,7 @@ export default {
             let bookDetailUrl = store.pathApiBookDetail;
 
             axios
-                .get(bookDetailUrl + this.book_id)
+                .get(bookDetailUrl + this.book_id + '/show')
                 .then(
                     res => {
                         this.book = res.data;
