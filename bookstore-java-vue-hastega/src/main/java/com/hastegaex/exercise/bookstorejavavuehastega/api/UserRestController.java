@@ -20,9 +20,7 @@ public class UserRestController {
     // Rotta "/api/v1/users" (GET)
     @GetMapping
     public List<User> index() {
-        // Ritorno lista degli utenti
+        // Ritorno lista di utenti
         return userService.getUserList();
     }
 }
-
-
