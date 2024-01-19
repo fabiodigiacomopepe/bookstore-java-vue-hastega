@@ -26,7 +26,6 @@ export default {
         }
     },
     mounted() {
-        this.userId = this.$route.params.id;
         this.getBooksList();
     }
 }
@@ -43,7 +42,9 @@ export default {
                 <div v-if="store.userIdLogin == 0" style="font-weight: bold; font-size: 40px;">NON SEI AUTORIZZATO AD
                     ACCEDERE.</div>
                 <div v-else>
-                    <h3>Ciao <span style=" font-weight: bold;">{{ books.firstName }} {{ books.lastName }}</span>, ecco la
+                    <h3>Ciao <span style=" font-weight: bold;">{{ store.arrayUsers[store.userIdLogin - 1].firstName }} {{
+                        store.arrayUsers[store.userIdLogin - 1].lastName
+                    }}</span>, ecco la
                         tua
                         lista di libri:</h3>
                     <table class="table" style="text-align: left; border: 1px;">
@@ -57,7 +58,7 @@ export default {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(book, index) in this.books.books" :key="index">
+                            <tr v-for="(book, index) in this.books" :key="index">
                                 <th scope="row">{{ index + 1 }}</th>
                                 <td>{{ book.title }}</td>
                                 <td>{{ book.author }}</td>
