@@ -1,9 +1,11 @@
 package com.hastegaex.exercise.bookstorejavavuehastega.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,10 +24,10 @@ public class User {
     @NotBlank
     @Email
     private String email;
-
-    // Con fetch = FetchType.EAGER carico tutto
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Book> books;
+    
+    @JsonIgnore   // Per non cadere in RICORSIONE (LOOP) !!
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Book> books = new ArrayList<>();
 
     public Integer getId() {
         return id;

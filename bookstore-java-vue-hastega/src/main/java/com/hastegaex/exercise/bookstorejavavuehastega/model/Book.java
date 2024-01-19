@@ -23,7 +23,7 @@ public class Book {
 
     @NotBlank(message = "L'ISBN non puo' essere nullo")
     @Size(max = 13, message = "L'ISBN non può essere più di 13 caratteri")
-    @Column(length = 13, nullable = false, unique = true)
+    @Column(length = 13, nullable = false)
     private String isbn;
 
     private String createdAt;
@@ -36,6 +36,10 @@ public class Book {
 
     @Min(0)
     private Integer numberOfCompleteReadings;
+
+    @ManyToOne(fetch = FetchType.EAGER) // o FetchType.LAZY a seconda delle esigenze
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     public Integer getId() {
         return id;
@@ -99,5 +103,13 @@ public class Book {
 
     public void setNumberOfCompleteReadings(Integer numberOfCompleteReadings) {
         this.numberOfCompleteReadings = numberOfCompleteReadings;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
