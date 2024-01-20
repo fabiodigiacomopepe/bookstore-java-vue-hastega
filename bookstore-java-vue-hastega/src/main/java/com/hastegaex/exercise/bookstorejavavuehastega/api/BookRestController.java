@@ -35,4 +35,12 @@ public class BookRestController {
         Book savedBook = bookService.editBook(formBook);
         return ResponseEntity.ok("Book saved.");
     }
+
+    //    // Rotta "/api/v1/books/id/delete" <---(id dinamico) (POST)
+    @PostMapping("/{id}/delete")
+    public ResponseEntity<String> deleteBook(@PathVariable Integer id, @RequestBody String formData) {
+//        Book bookToDelete = bookService.getBookById(id);
+        Book deletedBook = bookService.deleteBook(id, formData);
+        return ResponseEntity.ok("Book deleted.");
+    }
 }
