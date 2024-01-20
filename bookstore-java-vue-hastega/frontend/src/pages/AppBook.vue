@@ -8,6 +8,7 @@ export default {
         return {
             store,
             books: [],
+            convertedData: "",
         }
     },
     methods: {
@@ -23,6 +24,41 @@ export default {
                 .catch(err => {
                     console.log(err);
                 })
+        },
+        deleteBook(id) {
+            if (confirm("Sei sicuro di voler eliminare il libro?")) {
+                let currentDateTime = new Date().toLocaleString();
+                this.convertedData = this.convertDataFormat(currentDateTime);
+
+                let bookDeleteUrl = store.pathApiBookDetail;
+
+                let dataCodificata = encodeURIComponent(this.convertedData);
+
+                axios.post(bookDeleteUrl + id + '/delete', dataCodificata)
+                    .then(res => {
+                        console.log(res.data);
+                        this.getBooksList();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+        },
+        convertDataFormat(currentDateTime) {
+            // Divido la data e l'ora utilizzando lo spazio come separatore
+            let [datePart, timePart] = currentDateTime.split(", ");
+            // Divido la parte della data in giorno, mese e anno
+            let [day, month, year] = datePart.split("/");
+            // Aggiungo lo zero iniziale se necessario per il month e il day
+            if (month.length === 1) {
+                month = "0" + month;
+            }
+            if (day.length === 1) {
+                day = "0" + day;
+            }
+            // Ricostruisco la data nel formato YYYY-MM-DD
+            let DataConverted = `${year}-${month}-${day} ${timePart}`;
+            return DataConverted;
         }
     },
     mounted() {
@@ -47,34 +83,53 @@ export default {
                     }}</span>, ecco la
                         tua
                         lista di libri:</h3>
-                    <table class="table" style="text-align: left; border: 1px;">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Titolo</th>
-                                <th scope="col">Autore</th>
-                                <th scope="col">ISBN</th>
-                                <th scope="col">Letture</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(book, index) in this.books" :key="index">
-                                <th scope="row">{{ index + 1 }}</th>
-                                <td>{{ book.title }}</td>
-                                <td>{{ book.author }}</td>
-                                <td>{{ book.isbn }}</td>
-                                <td>{{ book.numberOfCompleteReadings }}</td>
-                                <router-link :to="{ name: 'book-detail', params: { id: book.id } }">
-                                    <i class="fa-solid fa-magnifying-glass btn btn-dark"
-                                        style="position: relative; top: 5px; height: 30px; border-radius: 20px;"></i>
-                                </router-link>
-                                <router-link :to="{ name: 'book-edit', params: { id: book.id } }">
-                                    <i class="fa-solid fa-pen-to-square btn btn-dark"
-                                        style="position: relative; top: 5px; height: 30px; border-radius: 20px;"></i>
-                                </router-link>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div v-if="this.books.length == 0" style="font-size: 40px; font-weight: bold;">NESSUN LIBRO PRESENTE.
+                    </div>
+                    <div v-else>
+                        <table class="table" style="text-align: left; border: 1px;">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Titolo</th>
+                                    <th scope="col">Autore</th>
+                                    <th scope="col">ISBN</th>
+                                    <th scope="col">Letture</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(book, index) in this.books" :key="index">
+                                    <th scope="row">{{ index + 1 }}</th>
+                                    <td>{{ book.title }}</td>
+                                    <td>{{ book.author }}</td>
+                                    <td>{{ book.isbn }}</td>
+                                    <td>{{ book.numberOfCompleteReadings }}</td>
+                                    <td>
+                                        <router-link :to="{ name: 'book-detail', params: { id: book.id } }">
+                                            <i class="fa-solid fa-magnifying-glass btn btn-dark"
+                                                style="height: 30px; border-radius: 20px;"></i>
+                                        </router-link>
+                                    </td>
+                                    <td>
+                                        <router-link :to="{ name: 'book-edit', params: { id: book.id } }">
+                                            <i class="fa-solid fa-pen-to-square btn btn-dark"
+                                                style="height: 30px; border-radius: 20px;"></i>
+                                        </router-link>
+                                    </td>
+                                    <td>
+                                        <form @submit.prevent="deleteBook(book.id)">
+                                            <button type="submit" style="border: none; background-color: white !important;">
+                                                <i class="fa-solid fa-trash btn btn-dark"
+                                                    style="height: 30px; border-radius: 20px;"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <br>
             </div>

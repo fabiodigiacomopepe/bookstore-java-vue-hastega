@@ -36,7 +36,6 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
-
         }
     },
     mounted() {
@@ -79,7 +78,7 @@ export default {
                                 style="width: 100%; padding: 8px; border-radius: 10px;" v-model="this.book.plot"></textarea>
                         </div>
                         <input type="hidden" v-model="this.book.id">
-                        <button type="submit">Invia</button>
+                        <button type="submit" class="btn btn-dark" style="width: 100%;">Invia</button>
                     </form>
                 </div>
             </div>
