@@ -9,6 +9,8 @@ export default {
             store,
             books: [],
             convertedData: "",
+            userName: "",
+            userSurname: "",
         }
     },
     methods: {
@@ -63,6 +65,13 @@ export default {
     },
     mounted() {
         this.getBooksList();
+    },
+    created() {
+        let userNameArray = this.store.arrayUsers.find(user => user.id === this.store.userIdLogin);
+        if (userNameArray) {
+            this.userName = userNameArray.firstName;
+            this.userSurname = userNameArray.lastName;
+        }
     }
 }
 </script>
@@ -78,11 +87,14 @@ export default {
                 <div v-if="store.userIdLogin == 0" style="font-weight: bold; font-size: 40px;">NON SEI AUTORIZZATO AD
                     ACCEDERE.</div>
                 <div v-else>
-                    <h3>Ciao <span style=" font-weight: bold;">{{ store.arrayUsers[store.userIdLogin - 1].firstName }} {{
-                        store.arrayUsers[store.userIdLogin - 1].lastName
-                    }}</span>, ecco la
-                        tua
-                        lista di libri:</h3>
+                    <h3>Ciao <span style=" font-weight: bold;">{{ this.userName }} {{
+                        this.userSurname }}</span>, ecco la tua lista di libri:</h3>
+                    <div class="d-flex">
+                        <router-link :to="{ name: 'book-create', params: { id: this.$route.params.id } }">
+                            <button class="btn btn-dark" style="margin-bottom: 20px; text-align: left;">Aggiungi
+                                libro</button>
+                        </router-link>
+                    </div>
                     <div v-if="this.books.length == 0" style="font-size: 40px; font-weight: bold;">NESSUN LIBRO PRESENTE.
                     </div>
                     <div v-else>
