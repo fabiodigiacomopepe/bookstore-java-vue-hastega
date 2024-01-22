@@ -23,6 +23,11 @@ const router = createRouter({
             name: 'book-edit',
             component: () => import('./pages/AppBookEdit.vue'),
         },
+        {
+            path: '/books/user/:id/create',
+            name: 'book-create',
+            component: () => import('./pages/AppBookEdit.vue'),
+        },
     ]
 });
 
