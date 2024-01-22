@@ -118,9 +118,9 @@ export default {
             if (!this.book.isbn || this.contieneSoloSpaziVuoti(this.book.isbn)) {
                 this.isValid = false;
                 this.errors.isbn = "L'ISBN non può essere nullo";
-            } else if (this.book.isbn.length > 13) {
+            } else if (this.book.isbn.length != 13) {
                 this.isValid = false;
-                this.errors.isbn = "L'ISBN non può essere più di 13 caratteri";
+                this.errors.isbn = "L'ISBN deve essere di 13 caratteri";
             } else {
                 this.errors.isbn = "";
             }
