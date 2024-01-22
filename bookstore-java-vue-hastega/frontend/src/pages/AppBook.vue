@@ -11,17 +11,19 @@ export default {
             convertedData: "",
             userName: "",
             userSurname: "",
+            pagination: [],
         }
     },
     methods: {
-        getBooksList() {
+        getBooksList(page) {
             let bookListUrl = store.pathApiBooks;
 
             axios
-                .get(bookListUrl + store.userIdLogin)
+                .get(bookListUrl + store.userIdLogin + "?page=" + page + "&size=5")
                 .then(
                     res => {
-                        this.books = res.data;
+                        this.books = res.data.content;
+                        this.pagination = res.data;
                     })
                 .catch(err => {
                     console.log(err);
@@ -39,7 +41,7 @@ export default {
                 axios.post(bookDeleteUrl + id + '/delete', dataCodificata)
                     .then(res => {
                         console.log(res.data);
-                        this.getBooksList();
+                        this.getBooksList(0);
                     })
                     .catch(err => {
                         console.log(err);
@@ -64,7 +66,7 @@ export default {
         }
     },
     mounted() {
-        this.getBooksList();
+        this.getBooksList(0);
     },
     created() {
         let userNameArray = this.store.arrayUsers.find(user => user.id === this.store.userIdLogin);
@@ -113,7 +115,7 @@ export default {
                             </thead>
                             <tbody>
                                 <tr v-for="(book, index) in this.books" :key="index">
-                                    <th scope="row">{{ index + 1 }}</th>
+                                    <th scope="row">{{ this.pagination.pageable.offset + 1 + index }}</th>
                                     <td>{{ book.title }}</td>
                                     <td>{{ book.author }}</td>
                                     <td>{{ book.isbn }}</td>
@@ -141,6 +143,22 @@ export default {
                                 </tr>
                             </tbody>
                         </table>
+
+                        <nav aria-label="..." style="margin-top: 30px;">
+                            <h6 style="text-align: left;">Seleziona pagina</h6>
+                            <ul class="pagination" style="cursor: pointer;">
+                                <li class="page-item" :class="this.pagination.first ? 'disabled' : ''">
+                                    <a class="page-link"
+                                        @click="getBooksList(this.pagination.pageable.pageNumber - 1)">&laquo;
+                                        Precedente</a>
+                                </li>
+                                <li class="page-item" style="margin-left: 20px;">
+                                    <a class="page-link" :class="this.pagination.last ? 'disabled' : ''"
+                                        @click="getBooksList(this.pagination.pageable.pageNumber + 1)">Successiva
+                                        &raquo;</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
                 <br>
