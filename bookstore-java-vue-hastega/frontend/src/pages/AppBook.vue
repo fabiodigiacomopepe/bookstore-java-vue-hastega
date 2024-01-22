@@ -79,7 +79,7 @@ export default {
 <template>
     <div class="container_list d-flex justify-content-center align-items-center">
         <div class="sub_container d-flex justify-content-center text-center" style="height: 90%; overflow-y: auto;">
-            <div>
+            <div style="width: 85%;">
                 <h1>LA MIA LIBRERIA</h1>
                 <router-link :to="{ name: 'home' }">
                     <button class="btn btn-primary" style="margin-bottom: 20px;">LOGOUT</button>
