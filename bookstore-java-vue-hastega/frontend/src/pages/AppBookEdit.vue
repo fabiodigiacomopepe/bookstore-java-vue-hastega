@@ -125,7 +125,7 @@ export default {
                 this.errors.isbn = "";
             }
 
-            if (!this.book.numberOfCompleteReadings) {
+            if (this.contieneSoloSpaziVuoti(this.book.numberOfCompleteReadings)) {
                 this.isValid = false;
                 this.errors.numberOfCompleteReadings = "Il numero di letture complete non può essere nullo";
             } else if (this.book.numberOfCompleteReadings < 0) {
@@ -151,6 +151,8 @@ export default {
         this.page = this.$route.name;
         if (this.page == "book-edit") {
             this.getBook();
+        } else {
+            this.book.numberOfCompleteReadings = 0;
         }
     }
 }
@@ -184,7 +186,6 @@ export default {
                                 errors.numberOfCompleteReadings }}</span>
                         </div>
                         <div>
-
                             <label for="isbn">ISBN-13:</label><br>
                             <input type="text" name="isbn" v-model="this.book.isbn">
                             <span v-show="errors.isbn" style="color: red;">{{ errors.isbn }}</span>
