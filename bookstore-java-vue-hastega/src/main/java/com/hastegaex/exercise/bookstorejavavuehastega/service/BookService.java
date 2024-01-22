@@ -2,6 +2,7 @@ package com.hastegaex.exercise.bookstorejavavuehastega.service;
 
 import com.hastegaex.exercise.bookstorejavavuehastega.exceptions.BookNotFoundException;
 import com.hastegaex.exercise.bookstorejavavuehastega.model.Book;
+import com.hastegaex.exercise.bookstorejavavuehastega.model.User;
 import com.hastegaex.exercise.bookstorejavavuehastega.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -55,5 +57,26 @@ public class BookService {
         // Salvo il book
         // Metodo .save salva ciò che riceve. Se i campi nel form mancano, li lascia vuoti (non si comporta come update)
         return bookRepository.save(bookToDelete);
+    }
+
+    public Book createBook(Optional<User> userBook, Book formBook) {
+        Book bookToSave = new Book();
+        bookToSave.setId(null);
+        bookToSave.setTitle(formBook.getTitle());
+        bookToSave.setAuthor(formBook.getAuthor());
+        bookToSave.setIsbn(formBook.getIsbn());
+        bookToSave.setDeletedAt(formBook.getDeletedAt());
+        bookToSave.setPlot(formBook.getPlot());
+        bookToSave.setNumberOfCompleteReadings(formBook.getNumberOfCompleteReadings());
+        bookToSave.setUser(userBook.get());
+
+        // Converto stringa eliminado caratteri speciali
+        String dataDecoded = URLDecoder.decode(formBook.getCreatedAt(), StandardCharsets.UTF_8);
+        String dataDecodedFinal = dataDecoded.replace("=", "");
+
+        // Valorizzo con i setter i vari parametri passando quelli ricevuti dal form
+        bookToSave.setCreatedAt(dataDecodedFinal);
+
+        return bookRepository.save(bookToSave);
     }
 }

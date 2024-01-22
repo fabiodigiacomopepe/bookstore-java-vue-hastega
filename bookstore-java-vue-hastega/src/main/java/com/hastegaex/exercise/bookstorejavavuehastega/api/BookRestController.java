@@ -1,12 +1,16 @@
 package com.hastegaex.exercise.bookstorejavavuehastega.api;
 
+import com.hastegaex.exercise.bookstorejavavuehastega.exceptions.UserNotFoundException;
 import com.hastegaex.exercise.bookstorejavavuehastega.model.Book;
+import com.hastegaex.exercise.bookstorejavavuehastega.model.User;
 import com.hastegaex.exercise.bookstorejavavuehastega.service.BookService;
+import com.hastegaex.exercise.bookstorejavavuehastega.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -14,6 +18,9 @@ import java.util.List;
 public class BookRestController {
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private UserService userService;
 
     // Rotta "/api/v1/books/user/id" <---(dinamico) (GET)
     @GetMapping("/user/{id}")
@@ -36,11 +43,21 @@ public class BookRestController {
         return ResponseEntity.ok("Book saved.");
     }
 
-    //    // Rotta "/api/v1/books/id/delete" <---(id dinamico) (POST)
+    // Rotta "/api/v1/books/id/delete" <---(id dinamico) (POST)
     @PostMapping("/{id}/delete")
     public ResponseEntity<String> deleteBook(@PathVariable Integer id, @RequestBody String formData) {
-//        Book bookToDelete = bookService.getBookById(id);
         Book deletedBook = bookService.deleteBook(id, formData);
         return ResponseEntity.ok("Book deleted.");
+    }
+
+    // Rotta "/api/v1/books/id/delete" <---(id dinamico) (POST)
+    @PostMapping("/user/{id}/create")
+    public Book createBook(@PathVariable Integer id, @RequestBody Book formBook) throws UserNotFoundException {
+        Optional<User> userBook = userService.getUserById(id);
+        Book createBook = null;
+        if (userBook.isPresent()) {
+            createBook = bookService.createBook(userBook, formBook);
+        }
+        return createBook;
     }
 }
