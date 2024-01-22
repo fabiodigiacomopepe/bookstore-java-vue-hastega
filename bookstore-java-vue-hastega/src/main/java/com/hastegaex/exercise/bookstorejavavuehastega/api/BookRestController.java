@@ -6,10 +6,10 @@ import com.hastegaex.exercise.bookstorejavavuehastega.model.User;
 import com.hastegaex.exercise.bookstorejavavuehastega.service.BookService;
 import com.hastegaex.exercise.bookstorejavavuehastega.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,10 +23,21 @@ public class BookRestController {
     private UserService userService;
 
     // Rotta "/api/v1/books/user/id" <---(dinamico) (GET)
+//    @GetMapping("/user/{id}")
+//    public List<Book> index(@PathVariable Integer id) {
+//        // Ritorno lista di libri per utente
+//        return bookService.getBookListByUserId(id);
+//    }
+
+    // Rotta "/api/v1/books/user/id" <---(dinamico) (GET)
     @GetMapping("/user/{id}")
-    public List<Book> index(@PathVariable Integer id) {
-        // Ritorno lista di libri per utente
-        return bookService.getBookListByUserId(id);
+    public ResponseEntity<Page<Book>> index(
+            @PathVariable Integer id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
+        Page<Book> bookPage = bookService.getBookListByUserId(id, page, size);
+        return ResponseEntity.ok().body(bookPage);
     }
 
     // Rotta "/api/v1/books/id/show" <---(id dinamico) (GET)

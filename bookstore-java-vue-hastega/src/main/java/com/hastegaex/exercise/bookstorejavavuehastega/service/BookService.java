@@ -5,11 +5,13 @@ import com.hastegaex.exercise.bookstorejavavuehastega.model.Book;
 import com.hastegaex.exercise.bookstorejavavuehastega.model.User;
 import com.hastegaex.exercise.bookstorejavavuehastega.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,8 +20,12 @@ public class BookService {
     @Autowired
     private BookRepository bookRepository;
 
-    public List<Book> getBookListByUserId(Integer id) {
-        return bookRepository.findAllByUserIdWhereDeletedAtIsNotNull(id);
+    //    public List<Book> getBookListByUserId(Integer id) {
+//        return bookRepository.findAllByUserIdWhereDeletedAtIsNotNull(id);
+//    }
+    public Page<Book> getBookListByUserId(Integer id, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return bookRepository.findAllByUserIdAndDeletedAtIsNull(id, pageable);
     }
 
     public Book getBookById(Integer id) {
