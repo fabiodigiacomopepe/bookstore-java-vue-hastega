@@ -9,6 +9,8 @@ export default {
             store,
             book_id: null,
             book: [],
+            page: "",
+            convertedData: "",
         }
     },
     methods: {
@@ -26,21 +28,65 @@ export default {
                 })
         },
         submitForm() {
-            let bookDetailUrl = store.pathApiBookDetail;
+            if (this.page == "book-edit") {
+                let bookDetailUrl = store.pathApiBookDetail;
 
-            axios.post(bookDetailUrl + this.book_id + '/edit', this.book)
-                .then(res => {
-                    console.log(res.data);
-                    this.$router.push({ name: 'book-detail', params: { id: this.book_id } });
+                axios.post(bookDetailUrl + this.book_id + '/edit', this.book)
+                    .then(res => {
+                        console.log(res.data);
+                        this.$router.push({ name: 'book-detail', params: { id: this.book_id } });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            } else if (this.page == "book-create") {
+                let bookCreateUrl = store.pathApiBooks;
+
+                let currentDateTime = new Date().toLocaleString();
+                this.convertedData = this.convertDataFormat(currentDateTime);
+                let dataCodificata = encodeURIComponent(this.convertedData);
+
+                axios.post(bookCreateUrl + this.store.userIdLogin + '/create', {
+                    author: this.book.author,
+                    createdAt: dataCodificata,
+                    deletedAt: null,
+                    isbn: this.book.isbn,
+                    numberOfCompleteReadings: this.book.numberOfCompleteReadings,
+                    plot: this.book.plot,
+                    title: this.book.title,
                 })
-                .catch(err => {
-                    console.log(err);
-                });
+                    .then(res => {
+                        console.log(res.data);
+                        this.$router.push({ name: 'book-detail', params: { id: res.data.id } });
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+        },
+        convertDataFormat(currentDateTime) {
+            // Divido la data e l'ora utilizzando lo spazio come separatore
+            let [datePart, timePart] = currentDateTime.split(", ");
+            // Divido la parte della data in giorno, mese e anno
+            let [day, month, year] = datePart.split("/");
+            // Aggiungo lo zero iniziale se necessario per il month e il day
+            if (month.length === 1) {
+                month = "0" + month;
+            }
+            if (day.length === 1) {
+                day = "0" + day;
+            }
+            // Ricostruisco la data nel formato YYYY-MM-DD
+            let DataConverted = `${year}-${month}-${day} ${timePart}`;
+            return DataConverted;
         }
     },
     mounted() {
         this.book_id = this.$route.params.id;
-        this.getBook();
+        this.page = this.$route.name;
+        if (this.page == "book-edit") {
+            this.getBook();
+        }
     }
 }
 </script>
